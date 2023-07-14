@@ -736,19 +736,19 @@ Dest convolution(Src input, Weights weights, int64_t batch_group_count,
   assert(batch_group_count == 1);
 
   assert(input_batch_dimension == 0);
-  assert(input_spatial_dimensions[0] == 1);
-  assert(input_spatial_dimensions[1] == 2);
-  assert(input_feature_dimension == 3);
+  assert(input_feature_dimension == 1);
+  assert(input_spatial_dimensions[0] == 2);
+  assert(input_spatial_dimensions[1] == 3);
 
-  assert(kernel_spatial_dimensions[0] == 0);
-  assert(kernel_spatial_dimensions[1] == 1);
-  assert(kernel_input_feature_dimension == 2);
-  assert(kernel_output_feature_dimension == 3);
+  assert(kernel_output_feature_dimension == 0);
+  assert(kernel_input_feature_dimension == 1);
+  assert(kernel_spatial_dimensions[0] == 2);
+  assert(kernel_spatial_dimensions[1] == 3);
 
   assert(output_batch_dimension == 0);
-  assert(output_spatial_dimensions[0] == 1);
-  assert(output_spatial_dimensions[1] == 2);
-  assert(output_feature_dimension == 3);
+  assert(output_feature_dimension == 1);
+  assert(output_spatial_dimensions[0] == 2);
+  assert(output_spatial_dimensions[1] == 3);
 
   assert(input.dim(input_feature_dimension) % feature_group_count == 0);
   assert(weights.dim(kernel_input_feature_dimension) ==
@@ -811,8 +811,8 @@ Dest convolution(Src input, Weights weights, int64_t batch_group_count,
 
                   if (h_in < 0 || h_in >= H_IN || w_in < 0 || w_in >= W_IN)
                     continue;
-                  output(n, h_out, w_out, c_out) +=
-                      input(n, h_in, w_in, c_in) * weights(kh, kw, g_in, c_out);
+                  output(n, c_out, h_out, w_out) +=
+                      input(n, c_in, h_in, w_in) * weights(c_out, g_in, kh, kw);
                 }
               }
             }
